@@ -1,0 +1,7 @@
+---- ad_port_config 匹配 (3 in 1 文件) ----
+Adc.c (c:\zhuyue\baoluo\swn\user):const STRADPortConfig ad_port_config[] =
+Adc.c (c:\zhuyue\baoluo\swn\user):		GPIO_InitStructure.GPIO_Pin   = ad_port_config[i].pin;/*通道3*/
+Adc.c (c:\zhuyue\baoluo\swn\user):		GPIO_Init(ad_port_config[i].port, &GPIO_InitStructure);/*初始化*/
+---- ad_port_config 搜索遇到错误 (1) ----
+以下1个文件不能被处理：
+C:\zhuyue\baoluo\swn\metal.build_log.htm : 文件打不开。
