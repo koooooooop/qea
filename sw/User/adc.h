@@ -2,7 +2,8 @@
 #define _H_ADC_
 #include "define.h"
 #include "filter.h"
-
+#define ADC_DMA DMA2_Stream0
+#define ADC_DMA_BUFF_SIZE 4096
 
 #define P_EXTERNAL_0_CLK		RCC_AHB1Periph_GPIOA
 #define P_EXTERNAL_0_PORT	GPIOA
@@ -44,11 +45,13 @@
 #define P_EXTERNAL_7_PIN		GPIO_Pin_0
 #define P_EXTERNAL_7_SOURCE    GPIO_PinSource0
 
-#define ADC_CHANNEL_NUM 8
-#define ADC_BUFF_SIZE (U32)ADC_CHANNEL_NUM * (SAMPLE_DATA_NUM + FILTER_COEF_NUM)
-extern signed short *g_adc_samplebuff;
+#define ADC_CHANNEL_NUM 1
+extern U16 *g_adc_samplebuff;
+
 typedef struct{
 	U8 data;
+	U16 m_usADCCnt;
+	U16 m_usADCPointer;
 }adc_regs_typedef;
 extern adc_regs_typedef g_adc_regs;
 extern void fnADC_Init(void);

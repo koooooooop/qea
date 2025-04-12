@@ -10,10 +10,13 @@
 #define DET_APP_INDICATOR_PIN		10
 #define DET_APP_INDICATOR_PIN_DEF       GPIO_Pin_10
 
-
+#define DET_APP_ADC_BUFF_SIZE 256
 typedef struct{
 	U8 m_uchState;
 	U16 m_usTimer;
+	U16 m_usADCBuff[DET_APP_ADC_BUFF_SIZE];
+	U16 m_usADCount;
+	U8 *m_uchUartBuff;
 }STRDetAppRegType;
 
 #define DETAPP_STATE_IDLE 0

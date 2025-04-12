@@ -34,6 +34,7 @@
 #define WFUA_TX_BUFF_SIZE 1300
 #define WFUA_BS_CHARTIME 20
 
+#define WFUA_CMD_REPORTADC 0x50
 typedef struct
 {
 	U16 m_uchInP;

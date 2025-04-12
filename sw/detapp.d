@@ -40,3 +40,7 @@
 .\detapp.o: User\IO.h
 .\detapp.o: User\Timer.h
 .\detapp.o: User\switch.h
+.\detapp.o: User\adc.h
+.\detapp.o: User\filter.h
+.\detapp.o: User\fft.h
+.\detapp.o: User\UartWiFi.h

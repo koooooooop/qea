@@ -34,7 +34,7 @@ int main(void)
 	fnSW_Init();
 	fnUA_Init();
 	fnWFUA_Init();
-	fnBL_Init();
+	///fnBL_Init();
 	fnWF_Init();
 	fnRTM_Init();
 	fnDetApp_Init();
@@ -45,7 +45,7 @@ int main(void)
 		fnUA_RealTime();
 		fnWFUA_RealTime();
 		fnADC_Task();
-		fnBL_Task();
+		///fnBL_Task();
 	
 		app_task();
 		fnDetApp_RealTime();

@@ -20,7 +20,7 @@ const STRADPortConfig ad_port_config[] =
 };
 adc_regs_typedef g_adc_regs;
 
-signed short *g_adc_samplebuff;
+U16 *g_adc_samplebuff;
 void fnADC_Init(void);
 void fnADC_Task(void);
 void fnADC_InitDMA(void);
@@ -183,25 +183,20 @@ void fnADC_SRAM_Configuration(void)
    fnADC_NORSRAMInit();
 	
 }
-
+U16 adc_sample_buff[ADC_DMA_BUFF_SIZE];
 void fnADC_Init(void){
-	volatile U16 val;
 	U32 i;
 
-	volatile U16 adstest[1024];
 	
-	g_adc_samplebuff = (signed short *)ADC_DMABUFF_RAM_ADDR;
-	fnADC_SRAM_Configuration();
+	g_adc_samplebuff = adc_sample_buff;
+	g_adc_regs.m_usADCCnt = ADC_DMA_BUFF_SIZE;
+	g_adc_regs.m_usADCPointer = 0;
+	///fnADC_SRAM_Configuration();
 	fnADC_InitDMA();
+	fnADC_Start();
 	//fnADC_InitADC();
 	
 	//fnADC_InitTimer();
-	for(i = 0; i < 0x10000; i++)
-		SRAM_WriteUint16(2 *i, i);
-	for(i = 0; i < 1024; i++){
-		val = SRAM_ReadUint16(i * 2);
-		adstest[i] = val;
-	}
 	
 }
 void fnADC_Task(void){
@@ -215,7 +210,6 @@ U8 fnADC_IsFinish(void){
 }
 void fnADC_Start(void){
 	ADC_TIMER->CR1 = 0x0000;
-	DMA2_Stream0->NDTR = 65535;//ADC_BUFF_SIZE;/*数据传输的数量为3*/
 	DMA2->LIFCR = 0x3F;
 	fnADC_InitADC();
 	ADC->CCR |= 0x800000;
@@ -295,13 +289,13 @@ void fnADC_InitDMA(void)
 	DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&ADC1->DR;/*外设地址*/
 	DMA_InitStructure.DMA_Memory0BaseAddr    = (U32)g_adc_samplebuff;/*存取器地址*/
 	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralToMemory;/*方向从外设到内存*/
-	DMA_InitStructure.DMA_BufferSize = 65535;//ADC_BUFF_SIZE;/*数据传输的数量为3*/
+	DMA_InitStructure.DMA_BufferSize = ADC_DMA_BUFF_SIZE;/*数据传输的数量为3*/
 	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;/*地址不增加*/
 	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;/*地址不增加*/
 	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;/*数据长度半字*/
 	DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_HalfWord;/*数据长度半字*/
 	DMA_InitStructure.DMA_Priority = DMA_Priority_High;/*高优先级*/
-	DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;/*循环模式*/
+	DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;/*循环模式*/
 	DMA_InitStructure.DMA_FIFOMode = DMA_FIFOMode_Disable;/*禁止FIFO*/
 	DMA_InitStructure.DMA_FIFOThreshold = DMA_FIFOThreshold_HalfFull;/*FIFO的值*/
 	DMA_InitStructure.DMA_MemoryBurst = DMA_MemoryBurst_Single;/*单次传输*/
